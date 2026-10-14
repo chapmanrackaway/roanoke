@@ -1,0 +1,47 @@
+{
+  "siteName": "Roanoke Rides to Vote",
+  "city": "Roanoke, VA",
+  "timezone": "America/New_York",
+  "mapCenter": [37.2710, -79.9414],
+  "mapZoom": 13,
+  "searchBounds": { "south": 37.20, "west": -80.05, "north": 37.34, "east": -79.85 },
+
+  "election": {
+    "name": "General Election",
+    "date": "2026-11-03",
+    "pollsOpen": "06:00",
+    "pollsClose": "19:00"
+  },
+
+  "earlyVoting": {
+    "start": "2026-09-18",
+    "end": "2026-10-31",
+    "id": "early",
+    "name": "Office of Voter Registration and Elections (early voting)",
+    "address": "317 Kimball Avenue NE, Roanoke, VA 24016",
+    "note": "Roanoke City's only early in-person voting site. Check the city's elections page for daily hours before you go."
+  },
+
+  "transit": {
+    "agency": "Valley Metro",
+    "gtfsUrls": [
+      "https://vmgoapp.com/gtfs",
+      "https://storage.googleapis.com/storage/v1/b/mdb-latest/o/us-virginia-valley-metro-gtfs-2274.zip?alt=media"
+    ],
+    "agencyUrl": "https://valleymetro.com/",
+    "paratransitNote": "Riders with disabilities who can't use fixed-route buses may qualify for Valley Metro's ADA paratransit service. Ask Valley Metro about eligibility and booking well before Election Day."
+  },
+
+  "precinctBoundaries": {
+    "url": "https://gis03.roanokeva.gov/arcgis/rest/services/Public/Voter_Precincts/MapServer/1/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=geojson",
+    "note": "Boundaries are used only to suggest a precinct. Voters should confirm against their voter card or the state's voter lookup."
+  },
+
+  "links": {
+    "voterLookup": "https://vote.elections.virginia.gov/VoterInformation",
+    "cityElections": "https://www.roanokeva.gov/780/Voter-Registration-Elections",
+    "cityPollingPlaces": "https://www.roanokeva.gov/3166/Voting-Precincts-and-Polling-Places",
+    "stateElections": "https://www.elections.virginia.gov/",
+    "registrarPhone": "(540) 853-2281"
+  }
+}

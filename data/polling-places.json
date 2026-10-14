@@ -1,0 +1,27 @@
+{
+  "source": "City of Roanoke, Voting Precincts and Polling Places (https://www.roanokeva.gov/3166/Voting-Precincts-and-Polling-Places)",
+  "checked": "2026-10-14",
+  "note": "Coordinates are filled in by scripts/build-data.mjs (US Census geocoder). To pin a location by hand, add \"lat\" and \"lon\" to an entry and the build will keep them.",
+  "precincts": [
+    { "id": "peters-creek", "precinct": "Peters Creek", "place": "William Fleming High School (Auxiliary Gym)", "address": "3326 Ordway Drive NW, Roanoke, VA 24017", "note": "Voting is in the auxiliary gym, which you can't reach through the school's front entrance." },
+    { "id": "grandview", "precinct": "Grandview", "place": "Saint James Episcopal Church", "address": "4515 Delray Street NW, Roanoke, VA 24012" },
+    { "id": "preston-park", "precinct": "Preston Park", "place": "Preston Park Recreation Center", "address": "3137 Preston Avenue NW, Roanoke, VA 24012" },
+    { "id": "williamson-road", "precinct": "Williamson Road", "place": "Noel C. Taylor Academy", "address": "3229 Williamson Road NW, Roanoke, VA 24012" },
+    { "id": "east-gate", "precinct": "East Gate", "place": "Hollins Road Baptist Church", "address": "3502 Old Mountain Road NE, Roanoke, VA 24019" },
+    { "id": "hollins-road", "precinct": "Hollins Road", "place": "City Public Works Service Center", "address": "1802 Courtland Road NE, Roanoke, VA 24012" },
+    { "id": "southeast", "precinct": "Southeast", "place": "Belmont Branch Library", "address": "1101 Morningside Street SE, Roanoke, VA 24013" },
+    { "id": "lincoln-terrace", "precinct": "Lincoln Terrace", "place": "Lincoln Terrace Elementary School", "address": "1802 Liberty Road NW, Roanoke, VA 24012" },
+    { "id": "highland", "precinct": "Highland", "place": "Second Presbyterian Church", "address": "214 Mountain Avenue SW, Roanoke, VA 24016" },
+    { "id": "old-southwest-wasena", "precinct": "Old Southwest-Wasena", "place": "Highland Park Elementary School", "address": "1212 Fifth Street SW, Roanoke, VA 24016" },
+    { "id": "raleigh-court", "precinct": "Raleigh Court", "place": "Christ Lutheran Church", "address": "2011 Brandon Avenue SW, Roanoke, VA 24015" },
+    { "id": "south-roanoke", "precinct": "South Roanoke", "place": "Crystal Spring Elementary School", "address": "2620 Carolina Avenue SW, Roanoke, VA 24014" },
+    { "id": "garden-city", "precinct": "Garden City", "place": "Garden City Elementary School", "address": "3718 Garden City Boulevard SE, Roanoke, VA 24014" },
+    { "id": "crystal-spring", "precinct": "Crystal Spring", "place": "Crystal Spring Baptist Church", "address": "2411 Rosalind Avenue SW, Roanoke, VA 24014" },
+    { "id": "grandin-court", "precinct": "Grandin Court", "place": "Grandin Court Elementary School", "address": "2815 Spessard Avenue SW, Roanoke, VA 24015" },
+    { "id": "deyerle", "precinct": "Deyerle", "place": "Covenant Presbyterian Church", "address": "1831 Deyerle Road SW, Roanoke, VA 24018" },
+    { "id": "lee-hi", "precinct": "Lee-Hi", "place": "Grace Church", "address": "2731 Edgewood Street SW, Roanoke, VA 24015" },
+    { "id": "summit-hills", "precinct": "Summit Hills", "place": "Sovereign Grace Community Church", "address": "2216 Peters Creek Road NW, Roanoke, VA 24017", "note": "Formerly Westminster Presbyterian Church. The building changed hands, but the polling place address is the same." },
+    { "id": "forest-park", "precinct": "Forest Park", "place": "Forest Park Academy", "address": "2730 Melrose Avenue NW, Roanoke, VA 24017" },
+    { "id": "eureka-park", "precinct": "Eureka Park", "place": "Roanoke Academy for Mathematics and Science", "address": "1616 19th Street NW, Roanoke, VA 24017" }
+  ]
+}
