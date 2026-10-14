@@ -1,7 +1,7 @@
 // Address -> { lat, lon } for build-time geocoding of polling places.
 // Tries the US Census geocoder first, then OpenStreetMap Nominatim.
 
-const UA = 'roanoke-rides-to-vote (build script)';
+const UA = 'rides-to-vote (build script)';
 
 async function census(address) {
   const url = new URL('https://geocoding.geo.census.gov/geocoder/locations/onelineaddress');
