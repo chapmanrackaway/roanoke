@@ -1,8 +1,8 @@
 {
-  "name": "rides-to-vote",
+  "name": "roanoke-rides-to-vote",
   "version": "1.0.0",
   "private": true,
-  "description": "Interactive maps that help Virginia voters find a bus to their polling place (Roanoke and Radford).",
+  "description": "Interactive map that helps Roanoke, VA voters find a Valley Metro bus to their polling place.",
   "type": "module",
   "scripts": {
     "build": "npm run vendor && npm run data",

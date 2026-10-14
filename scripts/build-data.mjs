@@ -1,16 +1,12 @@
 #!/usr/bin/env node
-// Builds a page for each city in cities/ from live sources. For a city whose
-// folder is cities/<slug>/, it writes:
-//   site/<slug>/index.html               the trip planner page (from site/template.html)
-//   site/<slug>/data/transit.json        bus schedule for Election Day (from GTFS)
-//   site/<slug>/data/site-data.json      site config + polling places with coordinates
-//   site/<slug>/data/precincts.geojson   precinct boundaries (optional; used to suggest a precinct)
-// and site/index.html, a page linking to every city.
+// Builds everything in site/data/ from live sources:
+//   transit.json        Valley Metro schedule for Election Day (from GTFS)
+//   site-data.json      site config + polling places with coordinates
+//   precincts.geojson   precinct boundaries (optional; used to suggest a precinct)
 //
 // Usage:
-//   node scripts/build-data.mjs                                # every city, fetch everything
-//   node scripts/build-data.mjs --city radford                 # one city
-//   node scripts/build-data.mjs --city radford --gtfs feed.zip # use a local GTFS zip or folder
+//   node scripts/build-data.mjs                  # fetch everything
+//   node scripts/build-data.mjs --gtfs feed.zip  # use a local GTFS zip or folder
 //   node scripts/build-data.mjs --skip-geocode --skip-precincts
 
 import { readFile, writeFile, readdir, stat, mkdir } from 'node:fs/promises';
@@ -22,6 +18,7 @@ import { geocode } from './lib/geocode.mjs';
 import { matchPrecincts } from './lib/precincts.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+const outDir = join(root, 'site', 'data');
 const args = process.argv.slice(2);
 const flag = (name) => args.includes(name);
 const opt = (name) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : undefined; };
@@ -63,89 +60,10 @@ function unzip(buf) {
   return files;
 }
 
-const escHtml = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-
-async function listCities() {
-  const dir = join(root, 'cities');
-  const slugs = [];
-  for (const name of (await readdir(dir)).sort()) {
-    if ((await stat(join(dir, name))).isDirectory()) slugs.push(name);
-  }
-  return slugs;
-}
-
-async function loadCity(slug) {
-  const dir = join(root, 'cities', slug);
-  return {
-    slug,
-    config: JSON.parse(await readFile(join(dir, 'site.json'), 'utf8')),
-    polling: JSON.parse(await readFile(join(dir, 'polling-places.json'), 'utf8')),
-  };
-}
-
-async function writePage({ slug, config }) {
-  const template = await readFile(join(root, 'site', 'template.html'), 'utf8');
-  const vars = {
-    siteName: config.siteName,
-    agency: config.transit.agency,
-    city: config.city,
-    cityName: config.cityName,
-    addressExample: config.addressExample,
-  };
-  const html = template.replace(/\{\{(\w+)\}\}/g, (m, k) => {
-    if (!(k in vars)) throw new Error(`site/template.html uses {{${k}}}, which the build doesn't fill in`);
-    return escHtml(vars[k]);
-  });
-  await writeFile(join(root, 'site', slug, 'index.html'), html);
-}
-
-async function writeIndex(cities) {
-  const items = cities.map(({ slug, config }) =>
-    `      <li><a href="${escHtml(slug)}/"><strong>${escHtml(config.siteName)}</strong><span>${escHtml(config.transit.agency)} buses to ${escHtml(config.cityName)} polling places</span></a></li>`).join('\n');
-  const html = `<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Rides to Vote</title>
-  <meta name="description" content="Find a bus from your home to your polling place in Southwest Virginia.">
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body class="landing">
-  <main>
-    <h1>Rides to Vote</h1>
-    <p>Find a bus from your home to your polling place. Choose your city:</p>
-    <ul class="city-list">
-${items}
-    </ul>
-    <p class="hint">An independent, nonpartisan tool. Always confirm your polling place with official sources.</p>
-  </main>
-</body>
-</html>
-`;
-  await writeFile(join(root, 'site', 'index.html'), html);
-}
-
 async function main() {
-  const all = await listCities();
-  const only = args.flatMap((a, i) => (a === '--city' ? [args[i + 1]] : []));
-  for (const slug of only) if (!all.includes(slug)) throw new Error(`No city folder cities/${slug} (have: ${all.join(', ')})`);
-  if (opt('--gtfs') && only.length !== 1) throw new Error('--gtfs needs exactly one --city');
-  const slugs = only.length ? only : all;
-
-  for (const slug of slugs) {
-    console.log(`\n== ${slug}`);
-    await buildCity(await loadCity(slug));
-  }
-  await writeIndex(await Promise.all(all.map(loadCity)));
-  log(`Wrote site/index.html (${all.length} cities)`);
-}
-
-async function buildCity(city) {
-  const { slug, config, polling } = city;
-  const outDir = join(root, 'site', slug, 'data');
+  const config = JSON.parse(await readFile(join(root, 'config', 'site.json'), 'utf8'));
+  const polling = JSON.parse(await readFile(join(root, 'data', 'polling-places.json'), 'utf8'));
   await mkdir(outDir, { recursive: true });
-  await writePage(city);
 
   // 1. Transit
   const { files, source } = await loadGtfs(config.transit.gtfsUrls);
@@ -178,7 +96,6 @@ async function buildCity(city) {
     pollingChecked: polling.checked,
     places: places.map(({ id, precinct, place, address, note, lat, lon, early }) => ({ id, precinct, place, address, note, lat, lon, early: !!early })),
   };
-  siteData.transit = { ...config.transit };
   delete siteData.transit.gtfsUrls;
   await writeFile(join(outDir, 'site-data.json'), JSON.stringify(siteData, null, 2));
 

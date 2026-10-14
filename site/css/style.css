@@ -183,16 +183,3 @@ button.secondary { background: var(--panel); color: var(--accent); border: 1px s
   margin-top: 6px; font: inherit; font-weight: 600; color: #fff; background: #1d4ed8; border: 0; border-radius: 6px;
   padding: 6px 10px; cursor: pointer;
 }
-
-/* City picker (site/index.html) */
-body.landing { display: block; }
-.landing main { max-width: 560px; margin: 0 auto; padding: 48px 16px; }
-.landing h1 { margin: 0 0 8px; font-size: 1.8rem; }
-.city-list { list-style: none; padding: 0; margin: 24px 0; display: grid; gap: 12px; }
-.city-list a {
-  display: block; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius);
-  background: var(--panel); box-shadow: var(--shadow); text-decoration: none; color: var(--text);
-}
-.city-list a:hover, .city-list a:focus-visible { border-color: var(--accent); }
-.city-list strong { display: block; color: var(--accent); font-size: 1.1rem; }
-.city-list span { color: var(--muted); font-size: .95rem; }

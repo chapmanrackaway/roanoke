@@ -56,28 +56,27 @@ function setupText() {
   const today = todayStr(site.timezone);
   if (today > site.election.date) notes.push(`This election is over. Polling places and bus schedules shown here may be out of date.`);
   if (transit.substituted) {
-    notes.push(`${site.transit.agency} hasn't published its schedule for ${eDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} yet, so trip times use the schedule for ${parseDate(transit.serviceDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}. Check again closer to Election Day.`);
+    notes.push(`Valley Metro hasn't published its schedule for ${eDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} yet, so trip times use the schedule for ${parseDate(transit.serviceDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}. Check again closer to Election Day.`);
   }
   if (notes.length) showBanner(notes.map(esc).join('<br>'));
 
-  const fare = site.transit.fareNote ? ` ${site.transit.fareNote}`
-    : transit.fare ? ` A regular fare is $${transit.fare.price.toFixed(2)} (from ${site.transit.agency}'s published fare data).` : '';
+  const fare = transit.fare ? ` A regular fare is $${transit.fare.price.toFixed(2)} (from Valley Metro's published fare data).` : '';
   $('#info-body').innerHTML = `
     <ul>
       <li><strong>Bring what you need to vote.</strong> Check current ID rules at <a href="${esc(site.links.stateElections)}" target="_blank" rel="noopener">elections.virginia.gov</a>.</li>
       <li><strong>Riding the bus.</strong> Bus times come from ${esc(site.transit.agency)}'s published schedule. Real buses can run late, so leave yourself some extra time.${esc(fare)}
-        See <a href="${esc(site.transit.agencyUrl)}" target="_blank" rel="noopener">${esc(site.transit.agency)}</a> for ${site.transit.fareNote ? '' : 'fares, '}detours and real-time arrivals.</li>
+        See <a href="${esc(site.transit.agencyUrl)}" target="_blank" rel="noopener">${esc(site.transit.agency)}</a> for fares, detours, and real-time arrivals.</li>
       <li><strong>Accessibility.</strong> ${esc(site.transit.paratransitNote)} Virginia also offers curbside voting for voters age 65 or older and voters with a disability. Ask an election officer when you arrive.</li>
       <li><strong>Early voting.</strong> ${esc(site.earlyVoting.note)} Early voting runs ${esc(fmtDate(site.earlyVoting.start))} to ${esc(fmtDate(site.earlyVoting.end))} at ${esc(site.earlyVoting.address)}.</li>
-      <li><strong>Questions about where you vote?</strong> Call the ${esc(site.links.registrarName)} at ${esc(site.links.registrarPhone)} or visit the <a href="${esc(site.links.cityElections)}" target="_blank" rel="noopener">city's elections page</a>.</li>
+      <li><strong>Questions about where you vote?</strong> Call the Roanoke City Office of Voter Registration and Elections at ${esc(site.links.registrarPhone)} or visit the <a href="${esc(site.links.cityElections)}" target="_blank" rel="noopener">city's elections page</a>.</li>
     </ul>`;
 
   $('#footer').innerHTML = `
-    <p>Polling places: <a href="${esc(site.links.cityPollingPlaces)}" target="_blank" rel="noopener">${esc(site.cityGov)}</a> (checked ${esc(fmtDate(site.pollingChecked))}).
+    <p>Polling places: <a href="${esc(site.links.cityPollingPlaces)}" target="_blank" rel="noopener">City of Roanoke</a> (checked ${esc(fmtDate(site.pollingChecked))}).
        Bus schedules: ${esc(site.transit.agency)} GTFS feed, updated ${esc(new Date(transit.generated).toLocaleDateString('en-US'))}.
        Maps: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors.</p>
     <p>When you search for an address, it's sent to OpenStreetMap's geocoder to place it on the map. This site doesn't store it.</p>
-    <p>This is an independent, nonpartisan tool. It isn't run by the ${esc(site.cityGov)}, the Virginia Department of Elections, or ${esc(site.transit.agency)}. Always confirm your polling place with official sources.</p>`;
+    <p>This is an independent, nonpartisan tool. It isn't run by the City of Roanoke, the Virginia Department of Elections, or ${esc(site.transit.agency)}. Always confirm your polling place with official sources.</p>`;
 }
 
 // ---------- Form ----------
@@ -115,7 +114,7 @@ async function onSubmit(e) {
       const q = $('#address').value.trim();
       if (!q) { setStatus('#home-status', 'Enter your home address, use your location, or tap the map.', 'bad'); $('#address').focus(); return; }
       const hits = await geocodeAddress(q);
-      if (!hits.length) { setStatus('#home-status', `We couldn't find that address in ${state.site.cityName}. Check the spelling, or tap your home on the map.`, 'bad'); return; }
+      if (!hits.length) { setStatus('#home-status', "We couldn't find that address in Roanoke. Check the spelling, or tap your home on the map.", 'bad'); return; }
       if (hits.length > 1 && !sameSpot(hits)) { showSuggestions(hits); setStatus('#home-status', 'Which one is your address?', ''); return; }
       setHome(hits[0]);
     }
@@ -150,7 +149,7 @@ function detectPrecinct() {
     highlightPlace(id);
   } else {
     select.value = '';
-    setStatus('#place-status', `We couldn't match that address to a ${state.site.precinctArea} precinct. Choose your precinct from the list (it's on your voter card).`, 'bad');
+    setStatus('#place-status', "We couldn't match that address to a Roanoke City precinct. Choose your precinct from the list (it's on your voter card).", 'bad');
   }
 }
 
@@ -446,7 +445,7 @@ function drawItinerary(o) {
 async function geocodeAddress(q) {
   const { site } = state;
   const b = site.searchBounds;
-  const query = q.toLowerCase().includes(site.cityName.toLowerCase()) ? q : `${q}, ${site.city}`;
+  const query = /roanoke/i.test(q) ? q : `${q}, Roanoke, VA`;
   const url = new URL('https://nominatim.openstreetmap.org/search');
   url.search = new URLSearchParams({
     q: query, format: 'jsonv2', addressdetails: '1', limit: '5', countrycodes: 'us',

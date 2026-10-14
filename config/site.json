@@ -1,10 +1,6 @@
 {
   "siteName": "Roanoke Rides to Vote",
   "city": "Roanoke, VA",
-  "cityName": "Roanoke",
-  "cityGov": "City of Roanoke",
-  "precinctArea": "Roanoke City",
-  "addressExample": "215 Church Ave SW",
   "timezone": "America/New_York",
   "mapCenter": [37.2710, -79.9414],
   "mapZoom": 13,
@@ -46,7 +42,6 @@
     "cityElections": "https://www.roanokeva.gov/780/Voter-Registration-Elections",
     "cityPollingPlaces": "https://www.roanokeva.gov/3166/Voting-Precincts-and-Polling-Places",
     "stateElections": "https://www.elections.virginia.gov/",
-    "registrarName": "Roanoke City Office of Voter Registration and Elections",
     "registrarPhone": "(540) 853-2281"
   }
 }
